@@ -27,7 +27,7 @@ public class Brand implements Serializable {
     
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name ="have_type",joinColumns = @JoinColumn(name = "brand_brandid"),inverseJoinColumns = @JoinColumn (name ="type_typeid"))
+	@JoinTable(name ="have_type",joinColumns = @JoinColumn(name = "brands_id"),inverseJoinColumns = @JoinColumn (name ="types_id"))
 	Set<Type> types;
 	 
 	 public Brand() {
