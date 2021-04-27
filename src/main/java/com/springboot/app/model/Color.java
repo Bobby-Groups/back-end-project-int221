@@ -8,11 +8,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "colors")
-public class Color implements Serializable{
+public class Color {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-	private long Id;
+    private long Id;
 	private String colorcode;
 
 	private String colorname;

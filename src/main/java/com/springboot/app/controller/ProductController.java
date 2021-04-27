@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.app.model.Color;
@@ -21,6 +23,10 @@ public class ProductController {
 		return this.productRepository.findAll();
 		
 	}
+//	 @PostMapping(path = "/product")
+//	    public Product addProduct(@RequestBody Product products) {
+//		   return productRepository.save(products);
+//	    }	
 
 	
 	@Autowired ProductRepository productRepository;
