@@ -1,0 +1,15 @@
+version: '3'
+services:
+  my-spring:
+    build: .
+    ports:
+     - 5000:5000
+    container_name: spring-server
+    everonment:
+     - DB_HOST=${DB_HOST}
+     - DB_USER=${DB_USER}
+     - DB_PASS=${DB_PASS}
+networks:
+  defualt:
+    external:
+      name: intregrated-int221
