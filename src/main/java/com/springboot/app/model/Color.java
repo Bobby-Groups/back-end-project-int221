@@ -8,12 +8,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "colors")
-public class Color implements Serializable{
+public class Color {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-	private long Id;
-	
+    private long Id;
+	private String colorcode;
 
 	private String colorname;
 	
@@ -35,6 +34,14 @@ public class Color implements Serializable{
 		this.Id = colorId;
 	}
 
+	public String getColorcode() {
+		return colorcode;
+	}
+
+	public void setColorcode(String colorcode) {
+		this.colorcode = colorcode;
+	}
+
 	public String getColorName() {
 		return colorname;
 	}
@@ -45,8 +52,10 @@ public class Color implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Color [Id=" + Id + ", colorName=" + colorname + "]";
+		return "Color [Id=" + Id + ", colorcode=" + colorcode + ", colorname=" + colorname + "]";
 	}
+
+
 	
 
 	 
