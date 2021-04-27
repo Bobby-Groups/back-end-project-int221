@@ -23,10 +23,10 @@ public class ProductController {
 		return this.productRepository.findAll();
 		
 	}
-//	 @PostMapping(path = "/product")
-//	    public Product addProduct(@RequestBody Product products) {
-//		   return productRepository.save(products);
-//	    }	
+	 @PostMapping(path = "/product")
+	    public Product addProduct(@RequestBody Product products) {
+		   return this.productRepository.save(products);
+	    }	
 
 	
 	@Autowired ProductRepository productRepository;
