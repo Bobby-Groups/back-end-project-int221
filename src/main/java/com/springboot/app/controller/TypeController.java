@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +46,11 @@ public class TypeController {
 	        return typeRepository.save(newType);
 	      });
 	  }
+	
+	  @DeleteMapping("/type/{id}")
+	  public String deleteType(@PathVariable Long id) {
+		 typeRepository.deleteById(id);
+		return "delete type success";
+	  }	  
 	@Autowired TypeRepository typeRepository;
 }
