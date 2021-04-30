@@ -78,11 +78,11 @@ public class Type implements Serializable{
 
 	@Override
 	public String toString() {
-		 Formatter formatter = new Formatter();
-	        formatter.format("%.2f", price);
-		return "Type [Id=" + id + ", typename=" + typename + ", price=" +formatter.toString()+ ", description=" + description
+		return "Type [id=" + id + ", typename=" + typename + ", price=" + price + ", description=" + description
 				+ ", images=" + images + "]";
 	}
+
+	
 	
 	
 	
