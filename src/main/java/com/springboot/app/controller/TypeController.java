@@ -1,8 +1,11 @@
 package com.springboot.app.controller;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +30,7 @@ public class TypeController {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 		private IsImageService ImageService;
-	
+		
 	@CrossOrigin(origins = "*")
 	
 	@GetMapping("/type")
@@ -42,6 +45,8 @@ public class TypeController {
 	
 	@PutMapping("/type/{id}")
 	  public Type update(@RequestBody Type newType, @PathVariable Long id) {
+       String returnValue = "success";
+   
 	    return this.typeRepository.findById(id)
 	      .map(types -> {
 	    
@@ -59,21 +64,45 @@ public class TypeController {
 	
 	  @DeleteMapping("/type/{id}")
 	  public String deleteType(@PathVariable Long id) {
+		  String returnValue = "success" ;
+		  try {
 		 typeRepository.deleteById(id);
-		return "delete type success";
+		 
+		  }catch (Exception e) {
+			  e.printStackTrace();
+			  log.error("Error delete type",e);
+			  returnValue = "error";
+		  }
+		return returnValue;
 	  }	  
+	  
 	  @PostMapping("/uploadImage")
 	  public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-		  String returnValue = "";
+		  String returnValue = "success" ;
 		  try {
 			ImageService.saveImage(imageFile);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+	       	} catch (Exception e) {
 			e.printStackTrace();
 			log.error("Error saving photo",e);
 		    returnValue = "error";
 		}
 		  return returnValue;
+	  }
+	  
+	  @GetMapping("/img/{id}")
+	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
+		  
+		 Type  type = typeRepository.findById(id).orElse(null);
+		  String img_name  = type.getImages(); 
+		
+		  try {
+			  byte[] image = ImageService.getImageFile(img_name);
+	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+		} catch (Exception e) {
+			log.error("error get image",e);
+		}
+		return null;
+	  
 	  }
 	@Autowired TypeRepository typeRepository;
 }
