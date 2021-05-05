@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Product  {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
+	private String images ;
 	private Date date;
 	
 	@ManyToOne
@@ -63,11 +63,19 @@ public class Product  {
 	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
-	@Override
-	public String toString() {
-		return "Product [id=" + this.id + ", date=" + date + "]";
+
+	public String getImages() {
+		return images;
 	}
 
+	public void setImages(String images) {
+		this.images = images;
+	}
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", images=" + images + ", date=" + date + ", color=" + color + ", brand=" + brand
+				+ "]";
+	}
 
 	
 

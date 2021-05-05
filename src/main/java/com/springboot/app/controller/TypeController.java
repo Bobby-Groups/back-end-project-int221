@@ -30,8 +30,7 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class TypeController {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
-	@Autowired
-		private IsImageService ImageService;
+
 		
 
 	@CrossOrigin(origins = "*")
@@ -46,37 +45,12 @@ public class TypeController {
 					throw except;
    }
 	}
-	 @GetMapping("/img/{id}")
-	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
-		  
-		 Type  type = typeRepository.findById(id).orElse(null);
-		  String img_name  = type.getImages(); 
-		  
-		  try {
-			  byte[] image = ImageService.getImageFile(img_name);
-	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
-		} catch (Exception e) {
-			log.error("error get image",e);
-		}
-		return null;
-	  
-	  }
+
 	@PostMapping("type")
 	public Type addtype(@RequestBody Type types){
 		return this.typeRepository.save(types);
 	}
-	  @PostMapping("/uploadImage")
-	  public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-		  String returnValue = "success" ;
-		  try {
-			ImageService.saveImage(imageFile);
-	       	} catch (Exception e) {
-			e.printStackTrace();
-			log.error("Error saving photo",e);
-		    returnValue = "error";
-		}
-		  return returnValue;
-	  }
+	
 	  
 	@PutMapping("/type/{id}")
 	  public Type update(@RequestBody Type newType, @PathVariable Long id) {
@@ -88,7 +62,7 @@ public class TypeController {
 	    	  types.setTypename(newType.getTypename());
 	    	  types.setDescription(newType.getDescription());
 	    	  types.setPrice(newType.getPrice());
-	    	  types.setImages(newType.getImages());
+	    	
 	        return typeRepository.save(types);
 	      })
 	      .orElseGet(() -> {
