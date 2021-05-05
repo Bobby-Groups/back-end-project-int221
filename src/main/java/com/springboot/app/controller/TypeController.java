@@ -23,6 +23,8 @@ import com.springboot.app.repository.TypeRepository;
 import com.springboot.app.service.ImageService;
 import com.springboot.app.service.IsImageService;
 
+import exception.ApiRequestException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @RestController
@@ -31,18 +33,51 @@ public class TypeController {
 	@Autowired
 		private IsImageService ImageService;
 		
+
 	@CrossOrigin(origins = "*")
 	
 	@GetMapping("/type")
-	public Collection<Type> type(){
-		return this.typeRepository.findAll();
-				
+	public Collection<Type> type() {
+		ApiRequestException except = new ApiRequestException("oops this is custom exception");
+	
+		try {	throw except;
+			
+		} catch (Exception e) {
+				return this.typeRepository.findAll();
+   }
 	}
+	 @GetMapping("/img/{id}")
+	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
+		  
+		 Type  type = typeRepository.findById(id).orElse(null);
+		  String img_name  = type.getImages(); 
+		  
+		  try {
+			  byte[] image = ImageService.getImageFile(img_name);
+	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+		} catch (Exception e) {
+			log.error("error get image",e);
+		}
+		return null;
+	  
+	  }
 	@PostMapping("type")
 	public Type addtype(@RequestBody Type types){
 		return this.typeRepository.save(types);
 	}
-	
+	  @PostMapping("/uploadImage")
+	  public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
+		  String returnValue = "success" ;
+		  try {
+			ImageService.saveImage(imageFile);
+	       	} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Error saving photo",e);
+		    returnValue = "error";
+		}
+		  return returnValue;
+	  }
+	  
 	@PutMapping("/type/{id}")
 	  public Type update(@RequestBody Type newType, @PathVariable Long id) {
        String returnValue = "success";
@@ -76,33 +111,7 @@ public class TypeController {
 		return returnValue;
 	  }	  
 	  
-	  @PostMapping("/uploadImage")
-	  public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-		  String returnValue = "success" ;
-		  try {
-			ImageService.saveImage(imageFile);
-	       	} catch (Exception e) {
-			e.printStackTrace();
-			log.error("Error saving photo",e);
-		    returnValue = "error";
-		}
-		  return returnValue;
-	  }
-	  
-	  @GetMapping("/img/{id}")
-	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
-		  
-		 Type  type = typeRepository.findById(id).orElse(null);
-		  String img_name  = type.getImages(); 
-		
-		  try {
-			  byte[] image = ImageService.getImageFile(img_name);
-	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
-		} catch (Exception e) {
-			log.error("error get image",e);
-		}
-		return null;
-	  
-	  }
+	
+	 
 	@Autowired TypeRepository typeRepository;
 }
