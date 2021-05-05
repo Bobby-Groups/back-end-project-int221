@@ -40,10 +40,10 @@ public class TypeController {
 	public Collection<Type> type() {
 		ApiRequestException except = new ApiRequestException("oops this is custom exception");
 	
-		try {	throw except;
-			
+		try {
+			return this.typeRepository.findAll();
 		} catch (Exception e) {
-				return this.typeRepository.findAll();
+					throw except;
    }
 	}
 	 @GetMapping("/img/{id}")
