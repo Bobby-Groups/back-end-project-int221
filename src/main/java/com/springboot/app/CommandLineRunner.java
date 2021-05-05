@@ -18,13 +18,13 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
 	@Override
 	public void run(String... args) throws Exception {
 	
-		for(Product p : this.productRepository.findAll()) {
-			System.out.println(p.toString());
-			}
-		System.out.println("--------------------------------------");
-		for (Color c : this.colorRepository.findAll()) {
-			System.out.println(c.toString());
-		}
+//		for(Product p : this.productRepository.findAll()) {
+//			System.out.println(p.toString());
+//			}
+//		System.out.println("--------------------------------------");
+//		for (Color c : this.colorRepository.findAll()) {
+//			System.out.println(c.toString());
+//		}
 //		System.out.println("--------------------------------------");
 //		for (Brand b : this.brandRepository.findAll()) {
 //			System.out.println(b.toString());

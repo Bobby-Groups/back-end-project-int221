@@ -22,7 +22,7 @@ public class Type implements Serializable{
 	private String typename;
 	private double price;
 	private String description;
-	private String images ;
+
 	
 
 	
@@ -68,19 +68,14 @@ public class Type implements Serializable{
 		this.description = description;
 	}
 
-	public String getImages() {
-		return images;
-	}
-
-	public void setImages(String images) {
-		this.images = images;
-	}
-
 	@Override
 	public String toString() {
-		return "Type [id=" + id + ", typename=" + typename + ", price=" + price + ", description=" + description
-				+ ", images=" + images + "]";
+		return "Type [id=" + id + ", typename=" + typename + ", price=" + price + ", description=" + description + "]";
 	}
+
+	
+
+	
 
 	
 	
