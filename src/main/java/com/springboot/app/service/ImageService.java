@@ -14,7 +14,7 @@ public class ImageService implements IsImageService{
 	private static final String FOLDER_URL = "./public/productimage/";
 	public void saveImage(MultipartFile imageFile) throws Exception {
 		// TODO Auto-generated method stub
-		String folder = "./public/productimage/";
+		String folder = "../../../../../../../public/productimage/";
 		byte[] bytes = imageFile.getBytes();
 		Path path = Paths.get(folder+ imageFile.getOriginalFilename());
 		Files.write(path, bytes);
