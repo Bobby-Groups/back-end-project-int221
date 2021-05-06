@@ -9,5 +9,5 @@ import com.springboot.app.model.Color;
 
 public interface ColorRepository  extends JpaRepository<Color, Long>{
 
-	Collection<Color> findById(long Id);
+	Collection<Color> findByid(long id);
 }

@@ -20,8 +20,8 @@ import javax.persistence.Table;
 public class Brand implements Serializable {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)	
-	private long Id;
-	
+	private long id;
+	private String images;
 	
 	private String brandname;
     
@@ -39,12 +39,21 @@ public class Brand implements Serializable {
 		this.brandname = brandName;
 	}
 
+	
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
+	}
+
 	public long getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(long brandId) {
-		this.Id = brandId;
+		this.id = brandId;
 	}
 
 	public String getBrandName() {
@@ -72,7 +81,7 @@ public class Brand implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Brand [Id=" + Id + ", brandname=" + brandname + ", types=" + types + "]";
+		return "Brand [Id=" + id + ", images=" + images + ", brandname=" + brandname + ", types=" + types + "]";
 	}
 
 	

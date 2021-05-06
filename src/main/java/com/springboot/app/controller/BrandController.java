@@ -3,7 +3,11 @@ package com.springboot.app.controller;
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +20,37 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.app.model.Brand;
 import com.springboot.app.model.Product;
 import com.springboot.app.repository.BrandRepository;
+import com.springboot.app.service.ImageService;
+import com.springboot.app.service.IsImageService;
 
-
+	@CrossOrigin(origins = "*")
 @RestController
 public class BrandController {
-	@CrossOrigin(origins = "*")
+		
+		private Logger log = LoggerFactory.getLogger(this.getClass());
+
+		@Autowired
+		private IsImageService ImageService;
 
 	@GetMapping("/brand")
 	public Collection<Brand> brand(){
 		return this.brandRepository.findAll();
 	}
+	 @GetMapping("/brandimg/{id}")
+	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
+		  
+		  Brand  brand = brandRepository.findById(id).orElse(null);
+		  String img_name  = brand.getImages(); 
+		  
+		  try {
+			  byte[] image = ImageService.getImageFile(img_name);
+	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+		} catch (Exception e) {
+			log.error("error get image",e);
+		}
+		return null;
+	  
+	  }
 	
 	 @PostMapping(path = "/brand")
 	    public Brand addBrand(@RequestBody Brand brands) {
