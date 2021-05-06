@@ -26,14 +26,13 @@ import com.springboot.app.repository.ProductRepository;
 import com.springboot.app.service.ImageService;
 import com.springboot.app.service.IsImageService;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 public class ProductController {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private IsImageService ImageService;
-	@CrossOrigin(origins = "*")
 
 	
 	@GetMapping("/product")
