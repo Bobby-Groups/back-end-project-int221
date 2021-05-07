@@ -22,7 +22,7 @@ public class Brand implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private long id;
 	private String images;
-	
+
 	private String brandname;
     
 
@@ -59,6 +59,8 @@ public class Brand implements Serializable {
 	public String getBrandName() {
 		return brandname;
 	}
+
+	
 
 	
 

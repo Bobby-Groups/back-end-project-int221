@@ -65,6 +65,7 @@ public class ProductController {
 					products.setColor(newproduct.getColor());
 					products.setDate(newproduct.getDate());
 					  products.setImages(newproduct.getImages());
+					  products.setType_id(newproduct.getType_id());
 					return productRepository.save(products);
 				}).orElseGet(() -> {
 					newproduct.setId(id);

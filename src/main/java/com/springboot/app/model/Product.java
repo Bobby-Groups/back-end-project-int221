@@ -20,7 +20,7 @@ public class Product  {
     private Long id;
 	private String images ;
 	private Date date;
-	
+	private long type_id;
 	@ManyToOne
 	@JoinColumn(name = "colors_Id")
     private Color color;
@@ -57,6 +57,12 @@ public class Product  {
 	}
 	
 	
+	public long getType_id() {
+		return type_id;
+	}
+	public void setType_id(long type_id) {
+		this.type_id = type_id;
+	}
 	public Brand getBrand() {
 		return brand;
 	}
@@ -73,8 +79,8 @@ public class Product  {
 	}
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", images=" + images + ", date=" + date + ", color=" + color + ", brand=" + brand
-				+ "]";
+		return "Product [id=" + id + ", images=" + images + ", date=" + date + ", type_id=" + type_id + ", color="
+				+ color + ", brand=" + brand + "]";
 	}
 
 	
