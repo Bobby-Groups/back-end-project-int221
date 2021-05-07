@@ -2,8 +2,10 @@ package com.springboot.app.controller;
 
 import java.util.Collection;
 
+import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.springboot.app.exception.ApiException;
+import com.springboot.app.exception.ApiRequestException;
 import com.springboot.app.model.Color;
 import com.springboot.app.model.Product;
 
@@ -29,7 +33,7 @@ import com.springboot.app.service.IsImageService;
 @CrossOrigin(origins = "*")
 @RestController
 public class ProductController {
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+
 
 	@Autowired
 	private IsImageService ImageService;
@@ -37,29 +41,52 @@ public class ProductController {
 	
 	@GetMapping("/product")
 	public Collection<Product> product() {
-		return this.productRepository.findAll();
-		
-	}
+		return productRepository.findAll();
+		}
+	@GetMapping("/product/{id}")
+	public Product getProduct(@PathVariable Long id) throws Exception {
+	return productRepository.findById(id).orElseThrow(() -> new ApiRequestException("product not found"));
+		}
+	 @GetMapping("/img/{id}")
+	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
+		  
+		 Product  product = productRepository.findById(id).orElse(null);
+		  String img_name  = product.getImages(); 
+		  
+		  try {
+			  byte[] image = ImageService.getImageFile(img_name);
+	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+		} catch (Exception e) {
+			throw new ApiRequestException("image not found at product id :" + id );
+		}
+	  
+	  }
 	 @PostMapping(path = "/product")
 	    public Product addProduct(@RequestBody Product products) {
-		   return this.productRepository.save(products);
+		 try {
+			   return this.productRepository.save(products);
+		} catch (Exception e) {
+			throw new ApiRequestException("can't insert product :" + products );// TODO: handle exception
+		}
+		
 	    }	
 	  @PostMapping("/uploadImage")
 	  public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-		  String returnValue = "success" ;
+	
 		  try {
 			ImageService.saveImage(imageFile);
 	       	} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Error saving photo",e);
-		    returnValue = "error";
+         throw new ApiRequestException("cannot upload this imagefile");
 		}
-		  return returnValue;
+		return null;
+
 	  }
 	 
 	@PutMapping(path ="product/{id}")
-	public Product update(@RequestBody Product newproduct,@PathVariable Long id) {
-		return this.productRepository.findById(id)
+	public Product update(@RequestBody Product newproduct,@PathVariable Long id) throws Exception{
+		try {
+			return this.productRepository.findById(id)
 				.map(products -> {
 					products.setBrand(newproduct.getBrand());
 					products.setColor(newproduct.getColor());
@@ -71,28 +98,21 @@ public class ProductController {
 					newproduct.setId(id);
 					return productRepository.save(newproduct);
 				});
+		} catch (Exception e) {
+			throw new ApiRequestException("not have product edit at id: " + id);
+ 				}
 	}
 	  @DeleteMapping("/product/{id}")
 	  public String deleteProduct(@PathVariable Long id) {
-		 productRepository.deleteById(id);
+		  try {
+			 productRepository.deleteById(id);
+		} catch (Exception e) {
+			throw new ApiRequestException("not have product to delete at  id: " + id);		}
+		
 		return "delete product success";
 	  }	  
 	  
-		 @GetMapping("/img/{id}")
-		  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
-			  
-			 Product  product = productRepository.findById(id).orElse(null);
-			  String img_name  = product.getImages(); 
-			  
-			  try {
-				  byte[] image = ImageService.getImageFile(img_name);
-		            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
-			} catch (Exception e) {
-				log.error("error get image",e);
-			}
-			return null;
-		  
-		  }
+		
 	
 	@Autowired ProductRepository productRepository;
 	

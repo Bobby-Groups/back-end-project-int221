@@ -2,6 +2,7 @@ package com.springboot.app.controller;
 
 import java.util.Collection;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,25 +13,33 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.app.exception.ApiRequestException;
 import com.springboot.app.model.Color;
 import com.springboot.app.repository.ColorRepository;
-
+@CrossOrigin(origins = "*")
 @RestController
 public class ColorController {
-	@CrossOrigin(origins = "*")
+	
 
 	@GetMapping("/color")
 	public Collection<Color> color(){
+		
 		return this.colorRepository.findAll();
 	}
 	
 	 @PostMapping(path = "/color")
     public Color addcolor(@RequestBody Color colors) {
-   return this.colorRepository.save(colors);
+		 try {
+			 return this.colorRepository.save(colors);
+		} catch (Exception e) {
+		throw new ApiRequestException("can't insert color :"+ colors);
+		}
+  
  }	
 	 @PutMapping("/color/{id}")
 	  public Color update(@RequestBody Color newColor, @PathVariable Long id) {
-	    return this.colorRepository.findById(id)
+		 try {
+			return this.colorRepository.findById(id)
 	      .map(colors -> {
 	    	  colors.setColorName(newColor.getColorName());
 	    	  colors.setColorcode(newColor.getColorcode());
@@ -40,11 +49,20 @@ public class ColorController {
 	    	  newColor.setId(id);
 	        return colorRepository.save(newColor);
 	      });
+		} catch (Exception e) {
+		 throw new ApiRequestException("not have color to edit at id :" + id);
+		}
+	    
 	  }
 	 
 	  @DeleteMapping("/color/{id}")
 	  public String deleteColor(@PathVariable Long id) {
-		 colorRepository.deleteById(id);
+		  try {
+				 colorRepository.deleteById(id);
+		} catch (Exception e) {
+			throw new ApiRequestException("not have color to delete at id :" + id);
+		}
+	
 		return "delete color success";
 	  }
 
