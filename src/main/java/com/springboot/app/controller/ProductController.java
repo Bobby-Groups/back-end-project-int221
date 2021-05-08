@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.app.exception.ApiException;
 import com.springboot.app.exception.ApiRequestException;
+import com.springboot.app.model.Brand;
 import com.springboot.app.model.Color;
 import com.springboot.app.model.Product;
 
@@ -47,20 +48,21 @@ public class ProductController {
 	public Product getProduct(@PathVariable Long id) throws Exception {
 	return productRepository.findById(id).orElseThrow(() -> new ApiRequestException("product not found" ));
 		}
-	 @GetMapping("/img/{id}")
+	@GetMapping("/img/{id}")
 	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
 		  
-		 Product  product = productRepository.findById(id).orElse(null);
+		  Product  product = productRepository.findById(id).orElse(null);
 		  String img_name  = product.getImages(); 
-		  
+	
 		  try {
 			  byte[] image = ImageService.getImageFile(img_name);
 	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
 		} catch (Exception e) {
-			throw new ApiRequestException("image not found at product id :" + id + "cause : " +e);
+			throw new ApiRequestException("image not found at brand id :" + id + "cause : " +e);
 		}
+		 }
 	  
-	  }
+	  
 	 @PostMapping(path = "/product")
 	    public Product addProduct(@RequestBody Product products) {
 		 try {
