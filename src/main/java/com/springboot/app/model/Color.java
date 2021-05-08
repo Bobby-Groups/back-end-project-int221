@@ -11,7 +11,7 @@ import java.util.Set;
 public class Color {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private long id;
 	private String colorcode;
 
 	private String colorname;
@@ -28,10 +28,10 @@ public class Color {
 	}
 
 	public long getId() {
-		return Id;
+		return id;
 	}
 	public void setId(long colorId) {
-		this.Id = colorId;
+		this.id = colorId;
 	}
 
 	public String getColorcode() {
@@ -52,7 +52,7 @@ public class Color {
 
 	@Override
 	public String toString() {
-		return "Color [Id=" + Id + ", colorcode=" + colorcode + ", colorname=" + colorname + "]";
+		return "Color [Id=" + id + ", colorcode=" + colorcode + ", colorname=" + colorname + "]";
 	}
 
 

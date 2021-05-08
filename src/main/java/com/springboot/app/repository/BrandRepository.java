@@ -8,5 +8,5 @@ import com.springboot.app.model.Brand;
 
 public interface BrandRepository extends JpaRepository<Brand, Long>{
  
-	Collection<Brand>findById(long brandId);
+	Collection<Brand>findByid(long Id);
 }

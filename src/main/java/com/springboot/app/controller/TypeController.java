@@ -17,73 +17,67 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.springboot.app.exception.ApiRequestException;
 import com.springboot.app.model.Color;
 import com.springboot.app.model.Type;
 import com.springboot.app.repository.TypeRepository;
 import com.springboot.app.service.ImageService;
 import com.springboot.app.service.IsImageService;
 
-import exception.ApiRequestException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @RestController
+@CrossOrigin(origins = "*")
 public class TypeController {
-	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-		
 
-	@CrossOrigin(origins = "*")
-	
 	@GetMapping("/type")
 	public Collection<Type> type() {
-		ApiRequestException except = new ApiRequestException("oops this is custom exception");
-	
-		try {
-			return this.typeRepository.findAll();
-		} catch (Exception e) {
-					throw except;
-   }
-	}
+	return this.typeRepository.findAll();
+		}
 
 	@PostMapping("type")
 	public Type addtype(@RequestBody Type types){
-		return this.typeRepository.save(types);
+		try {
+			return this.typeRepository.save(types);
+		} catch (Exception e) {
+		throw new ApiRequestException("can't insert type : "+ types + "cause : " +e);
+		}
+		
 	}
 	
-	  
-	@PutMapping("/type/{id}")
+	  @PutMapping("/type/{id}")
 	  public Type update(@RequestBody Type newType, @PathVariable Long id) {
-       String returnValue = "success";
-   
-	    return this.typeRepository.findById(id)
-	      .map(types -> {
-	    
-	    	  types.setTypename(newType.getTypename());
-	    	  types.setDescription(newType.getDescription());
-	    	  types.setPrice(newType.getPrice());
-	    	
-	        return typeRepository.save(types);
-	      })
-	      .orElseGet(() -> {
-	    	  newType.setId(id);
-	        return typeRepository.save(newType);
-	      });
-	  }
+     try {
+    	 return this.typeRepository.findById(id)
+    		      .map(types -> {
+    		    
+    		    	  types.setTypename(newType.getTypename());
+    		    	  types.setDescription(newType.getDescription());
+    		    	  types.setPrice(newType.getPrice());
+    		    	
+    		        return typeRepository.save(types);
+    		      })
+    		      .orElseGet(() -> {
+    		    	  newType.setId(id);
+    		        return typeRepository.save(newType);
+    		      });
+	} catch (Exception e) {
+		throw new ApiRequestException("can't edit type cause : " +e) ;
+	}
+     }
 	
 	  @DeleteMapping("/type/{id}")
 	  public String deleteType(@PathVariable Long id) {
-		  String returnValue = "success" ;
+		 
 		  try {
 		 typeRepository.deleteById(id);
 		 
 		  }catch (Exception e) {
-			  e.printStackTrace();
-			  log.error("Error delete type",e);
-			  returnValue = "error";
+		   throw new ApiRequestException("not have type to delete at id : " +id + "cause : " +e);
 		  }
-		return returnValue;
-	  }	  
+		return "delete type success";
+		 }	  
 	  
 	
 	 
