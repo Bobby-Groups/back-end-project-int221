@@ -32,7 +32,7 @@ public class ColorController {
 		 try {
 			 return this.colorRepository.save(colors);
 		} catch (Exception e) {
-		throw new ApiRequestException("can't insert color :"+ colors);
+		throw new ApiRequestException("can't insert color :"+ colors + "cause :" +e);
 		}
   
  }	
@@ -50,7 +50,7 @@ public class ColorController {
 	        return colorRepository.save(newColor);
 	      });
 		} catch (Exception e) {
-		 throw new ApiRequestException("not have color to edit at id :" + id);
+		 throw new ApiRequestException("can't edit color cause : " +e );
 		}
 	    
 	  }
@@ -60,7 +60,7 @@ public class ColorController {
 		  try {
 				 colorRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new ApiRequestException("not have color to delete at id :" + id);
+			throw new ApiRequestException("not have color to delete at id :" + id + "cause :" +e);
 		}
 	
 		return "delete color success";

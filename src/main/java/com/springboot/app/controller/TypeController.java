@@ -41,7 +41,7 @@ public class TypeController {
 		try {
 			return this.typeRepository.save(types);
 		} catch (Exception e) {
-		throw new ApiRequestException("can't insert type "+ types);
+		throw new ApiRequestException("can't insert type : "+ types + "cause : " +e);
 		}
 		
 	}
@@ -63,7 +63,7 @@ public class TypeController {
     		        return typeRepository.save(newType);
     		      });
 	} catch (Exception e) {
-		throw new ApiRequestException("not have type to edit at id :"+ id);
+		throw new ApiRequestException("can't edit type cause : " +e) ;
 	}
      }
 	
@@ -74,7 +74,7 @@ public class TypeController {
 		 typeRepository.deleteById(id);
 		 
 		  }catch (Exception e) {
-		   throw new ApiRequestException("not have type to delete at id: " +id);
+		   throw new ApiRequestException("not have type to delete at id : " +id + "cause : " +e);
 		  }
 		return "delete type success";
 		 }	  

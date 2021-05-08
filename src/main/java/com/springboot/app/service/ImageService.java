@@ -16,6 +16,7 @@ public class ImageService implements IsImageService{
 		// TODO Auto-generated method stub
 		
 		byte[] bytes = imageFile.getBytes();
+	
 		Path path = Paths.get(FOLDER_URL+ imageFile.getOriginalFilename());
 		Files.write(path, bytes);
 	}

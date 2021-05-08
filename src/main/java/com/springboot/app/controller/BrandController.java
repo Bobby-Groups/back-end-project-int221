@@ -42,12 +42,12 @@ public class BrandController {
 		  
 		  Brand  brand = brandRepository.findById(id).orElse(null);
 		  String img_name  = brand.getImages(); 
-		  
+	
 		  try {
 			  byte[] image = ImageService.getImageFile(img_name);
 	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
 		} catch (Exception e) {
-			throw new ApiRequestException("image not found at brand id :" + id );
+			throw new ApiRequestException("image not found at brand id :" + id + "cause : " +e);
 		}
 		 }
 	
@@ -56,7 +56,7 @@ public class BrandController {
 		 try {
 			 return this.brandRepository.save(brands);
 		} catch (Exception e) {
-			throw new ApiRequestException("can't insert brands :" + brands );
+			throw new ApiRequestException("can't insert brands : " + brands + "cause : " +e);
 		}
 		  
 	    }	
@@ -74,7 +74,7 @@ public class BrandController {
 			        return brandRepository.save(newbrands);
 			      });
 		} catch (Exception e) {
-			throw new ApiRequestException("not have  brands to edit at id :" + id );
+			throw new ApiRequestException("can't edit brand cause  : " +e);
 		}
 		
 	 }
@@ -84,7 +84,7 @@ public class BrandController {
 		 try {
 			brandRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new ApiRequestException("not have brand to delete at id :" + id );
+			throw new ApiRequestException("not have brand to delete at id :" + id + "cause" +e);
 		}
 		 
 		return "delete brand success";

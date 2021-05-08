@@ -45,7 +45,7 @@ public class ProductController {
 		}
 	@GetMapping("/product/{id}")
 	public Product getProduct(@PathVariable Long id) throws Exception {
-	return productRepository.findById(id).orElseThrow(() -> new ApiRequestException("product not found"));
+	return productRepository.findById(id).orElseThrow(() -> new ApiRequestException("product not found" ));
 		}
 	 @GetMapping("/img/{id}")
 	  public ResponseEntity<byte[]> getImage(@PathVariable("id") long id) {
@@ -57,7 +57,7 @@ public class ProductController {
 			  byte[] image = ImageService.getImageFile(img_name);
 	            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
 		} catch (Exception e) {
-			throw new ApiRequestException("image not found at product id :" + id );
+			throw new ApiRequestException("image not found at product id :" + id + "cause : " +e);
 		}
 	  
 	  }
@@ -66,7 +66,7 @@ public class ProductController {
 		 try {
 			   return this.productRepository.save(products);
 		} catch (Exception e) {
-			throw new ApiRequestException("can't insert product :" + products );// TODO: handle exception
+			throw new ApiRequestException("can't insert product :" + products +"cause : " + e);// TODO: handle exception
 		}
 		
 	    }	
@@ -77,7 +77,7 @@ public class ProductController {
 			ImageService.saveImage(imageFile);
 	       	} catch (Exception e) {
 			e.printStackTrace();
-         throw new ApiRequestException("cannot upload this imagefile");
+         throw new ApiRequestException("cannot upload this imagefile cause :" + e);
 		}
 		return null;
 
@@ -99,7 +99,7 @@ public class ProductController {
 					return productRepository.save(newproduct);
 				});
 		} catch (Exception e) {
-			throw new ApiRequestException("not have product edit at id: " + id);
+			throw new ApiRequestException("can't edit product cause : " + e );
  				}
 	}
 	  @DeleteMapping("/product/{id}")
@@ -107,7 +107,7 @@ public class ProductController {
 		  try {
 			 productRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new ApiRequestException("not have product to delete at  id: " + id);		}
+			throw new ApiRequestException("not have product to delete at  id : " + id + "cause : " + e);		}
 		
 		return "delete product success";
 	  }	  
