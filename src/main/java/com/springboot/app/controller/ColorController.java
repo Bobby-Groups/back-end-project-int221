@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.app.exception.ApiRequestException;
 import com.springboot.app.model.Color;
 import com.springboot.app.repository.ColorRepository;
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class ColorController {
 	
